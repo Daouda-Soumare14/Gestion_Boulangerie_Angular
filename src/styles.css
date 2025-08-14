@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+.content-wrapper {
+  margin-left: 250px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  background-color: #f8f9fa;
+}

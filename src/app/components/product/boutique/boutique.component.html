@@ -67,19 +67,19 @@
     <div class="row">
         <div *ngFor="let product of products" class="col-md-3 mb-4">
             <div class="card h-100 shadow-lg border-0 product-card">
-                <img *ngIf="product.image" [src]="'http://localhost:8000/storage/' + product.image" alt="Image Produit"
-                    class="card-img-top product-image">
+                <img *ngIf="product.photo" [src]="'http://localhost:8000/storage/' + product.photo" alt="Image Produit"
+                    class="card-img-top product-photo">
                 <div class="card-body">
                     <h4 class="card-title">{{ product.name }}</h4>
                     <h5 class="card-header text-primary">{{ product.price }} Fcfa</h5>
-                    <small>Réference: {{ product.reference }}</small>
+                    <small>Réference: {{ product.allergens }}</small>
                     <p class="card-text">
-                        Quantité: {{ product.quantity }}<br>
+                        Quantité: {{ product.stock }}<br>
                         Catégorie: {{ product.category.name }}
                     </p>
                 </div>
                 <div class="card-footer bg-white border-top-0">
-                    <button class="btn btn-primary w-100" (click)="addToCart(product)" [disabled]="product.quantity === 0">
+                    <button class="btn btn-primary w-100" (click)="addToCart(product)" [disabled]="product.stock === 0">
                         Ajouter au panier
                     </button>
                 </div>

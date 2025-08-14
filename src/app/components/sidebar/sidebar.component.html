@@ -1,0 +1,36 @@
+<div *ngIf="isLoggedIn()" class="d-flex">
+  <!-- Sidebar -->
+  <nav class="sidebar-modern">
+    <div class="sidebar-header">
+      <h5>🛍️ Ma boulangerie</h5>
+    </div>
+    <ul class="nav flex-column mt-4">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/boutique']" routerLinkActive="active">
+          <i class="bi bi-shop"></i> Catalogue
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/cart']" routerLinkActive="active">
+          <i class="bi bi-cart"></i> Panier
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="getRole() !== 'client'">
+        <a class="nav-link" [routerLink]="['/products']" routerLinkActive="router-link-active"
+          routerLinkActive="active">
+          <i class="bi bi-box-seam"></i> Produits
+        </a>
+      </li>
+    </ul>
+    <div class="logout-section mt-auto">
+      <button class="btn btn-danger w-100" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="main-content-modern">
+    <ng-content></ng-content>
+  </div>
+</div>
