@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="bg-light text-dark shadow-lg rounded-4 p-4 col-11 col-sm-8 col-md-6 col-lg-4">
+
+    <h2 class="text-center mb-4">Créer un compte</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nom</label>
+        <input type="text" id="name" class="form-control" formControlName="name" required>
+        <div>
+          <small class="text-danger" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+            Le nom est requis.
+          </small>
+          <small class="text-danger"
+            *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.errors?.['minlength']">
+            Le nom doit contenir au moins 3 caractères.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control" formControlName="email" required>
+        <div>
+          <small class="text-danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            L'email est requis et doit être valide.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" id="password" class="form-control" formControlName="password" required>
+        <div>
+          <small class="text-danger"
+            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Le mot de passe est requis et doit contenir au moins 3 caractères.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
+        <input type="password" id="confirm_password" class="form-control" formControlName="confirm_password" required>
+        <div>
+          <small class="text-danger"
+            *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirm_password')?.touched">
+            Les mots de passe ne correspondent pas.
+          </small>
+        </div>
+
+      </div>
+
+      <button class="btn btn-primary w-100 mb-3" [disabled]="registerForm.invalid" type="submit">
+        S'inscrire
+      </button>
+
+      <div class="text-center">
+        <a [routerLink]="['/login']" routerLinkActive="active" class="text-decoration-none text-secondary">
+          J’ai déjà un compte
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

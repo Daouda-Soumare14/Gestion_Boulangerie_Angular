@@ -1,0 +1,48 @@
+<div class="content-wrapper px-4">
+  <div class="card">
+    <div class="card-header text-center">
+      <h1>Liste des Produits</h1>
+    </div>
+
+    <div class="card-body table-responsive">
+      <a [routerLink]="['/create-product']" routerLinkActive="router-link-active" class="btn btn-primary my-3">Creer un nouveau
+        produit</a>
+
+
+
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Référence</th>
+            <th>Quantité</th>
+            <th>Image</th>
+            <th>Catégorie</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>
+              <img *ngIf="product.photo" [src]="'http://localhost:8000/storage/' + product.photo" alt="Image produit"
+                width="80" height="80" class="img-thumbnail">
+            </td>
+            <td>{{ product.category.name || 'N/A' }}</td>
+            <td>
+              <button class="btn btn-primary btn-sm me-1" [routerLink]="['/edit', product.id]"
+                routerLinkActive="router-link-active">Modifier</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

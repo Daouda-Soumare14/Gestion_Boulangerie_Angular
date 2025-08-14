@@ -1,0 +1,67 @@
+<div class="container mt-5 bg-light p-4 rounded shadow border col-4 pb-3">
+  <div class="card-body">
+    <h2 class="text-center text-primary">Ajouter un produit</h2>
+    <form [formGroup]="productForm" (ngSubmit)="createProduct()" enctype="multipart/form-data">
+      
+      <!-- Nom du produit -->
+      <div class="mb-3 form-group">
+        <label>Nom du produit</label>
+        <input type="text" class="form-control rounded shadow border" formControlName="name" required>
+        <small class="text-danger" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+          Le nom du produit est requis.
+        </small>
+      </div>
+
+      <!-- Prix du produit -->
+      <div class="mb-3 form-group">
+        <label>Prix du produit</label>
+        <input type="number" class="form-control rounded shadow border" formControlName="price" required>
+        <small class="text-danger" *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+          Le prix du produit est requis.
+        </small>
+      </div>
+
+      <!-- Stock / Quantité -->
+      <div class="mb-3 form-group">
+        <label>Quantité en stock</label>
+        <input type="number" class="form-control rounded shadow border" formControlName="stock" required>
+        <small class="text-danger" *ngIf="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
+          La quantité du produit est requise.
+        </small>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3 form-group">
+        <label>Description du produit</label>
+        <textarea class="form-control rounded shadow border" formControlName="description"></textarea>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="mb-3 form-group">
+        <label>Catégorie</label>
+        <select class="form-select rounded shadow border" formControlName="category_id" required>
+          <option value="" disabled selected>-- Sélectionnez une catégorie --</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+        <small class="text-danger"
+          *ngIf="productForm.get('category_id')?.invalid && productForm.get('category_id')?.touched">
+          La catégorie du produit est requise.
+        </small>
+      </div>
+
+      <!-- Allergènes -->
+      <div class="mb-3 form-group">
+        <label>Allergènes</label>
+        <input type="text" class="form-control rounded shadow border" formControlName="allergens">
+      </div>
+
+      <!-- Image -->
+      <div class="mb-3 form-group">
+        <label>Image</label>
+        <input type="file" class="form-control rounded shadow border" (change)="onFileSelected($event)">
+      </div>
+
+      <button type="submit" class="btn btn-primary form-control">Créer</button>
+    </form>
+  </div>
+</div>
