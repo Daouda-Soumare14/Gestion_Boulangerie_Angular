@@ -1,0 +1,6 @@
+.content-wrapper {
+  margin-left: 250px; /* largeur de ta sidebar */
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
