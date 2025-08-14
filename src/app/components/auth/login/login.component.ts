@@ -29,7 +29,7 @@ export class LoginComponent {
     }
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.router.navigate(['/products']);
+        this.router.navigate(['/boutique']);
       }
     })
   }

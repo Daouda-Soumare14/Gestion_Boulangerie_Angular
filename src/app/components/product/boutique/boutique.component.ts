@@ -41,15 +41,15 @@ export class BoutiqueComponent implements OnInit {
 
   loadProducts(page: number = 1): void {
     this.productService.getProducts().subscribe((res: any) => {
-      this.products = res.data.data;
-      this.currentPage = res.data.current_page;
-      this.lastPage = res.data.last_page;
+      this.products = res;
+      this.currentPage = res.current_page;
+      this.lastPage = res.last_page;
     })
   }
 
   loadCategories(): void {
     this.categoryService.getCategories().subscribe((res: any) => {
-      this.categories = res.data;
+      this.categories = res;
     })
   }
 

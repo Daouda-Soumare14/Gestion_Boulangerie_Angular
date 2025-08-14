@@ -1,0 +1,53 @@
+.sidebar-modern {
+  width: 250px;
+  height: 100vh;
+  background-color: #1e1e2f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1.5rem 1rem;
+  z-index: 1000;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-modern .sidebar-header h5 {
+  color: #ffffff;
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.sidebar-modern .nav-link {
+  color: #cfd2dc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-modern .nav-link:hover,
+.sidebar-modern .nav-link.active {
+  background-color: #2d2f46;
+  color: white;
+  font-weight: 500;
+}
+
+.sidebar-modern .logout-section {
+  margin-top: auto;
+}
+
+
+
+.main-content-modern {
+  margin-left: 250px; /* Décale le contenu à droite de la sidebar */
+  padding: 2rem;
+  width: 100%;
+}
+
