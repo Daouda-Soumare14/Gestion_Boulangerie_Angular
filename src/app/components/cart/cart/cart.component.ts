@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../../models/product/product';
 import { CartItem, CartService } from '../../../services/cart/cart.service';
+import { RouterLink } from "@angular/router";
 
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './cart.component.html',
 })
 export class CartComponent {
@@ -18,7 +19,6 @@ export class CartComponent {
   constructor(private cartService: CartService) {
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
-       console.log('Cart items:', this.cartItems);
     });
   }
 
@@ -39,9 +39,6 @@ export class CartComponent {
   }
 
   getTotal(): number {
-    return this.cartItems.reduce(
-      (total, item) => total + (item.product.price * item.quantity),
-      0
-    );
+    return this.cartService.getTotal();
   }
 }

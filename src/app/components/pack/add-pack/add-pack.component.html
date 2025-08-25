@@ -1,0 +1,56 @@
+<div class="container mt-5 bg-light p-4 rounded shadow border col-6 pb-3">
+  <div class="card-body">
+    <h2 class="text-center text-primary">Créer un Pack</h2>
+
+    <form [formGroup]="packForm" (ngSubmit)="createPack()" class="p-4 shadow rounded bg-light">
+
+      <!-- Nom du pack -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Nom du pack</label>
+        <input class="form-control" formControlName="name" placeholder="Entrez le nom du pack">
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Description</label>
+        <textarea class="form-control" formControlName="description" rows="3" placeholder="Décrivez le pack"></textarea>
+      </div>
+
+      <!-- Prix -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Prix</label>
+        <input type="number" class="form-control" formControlName="price" placeholder="Prix total du pack">
+      </div>
+
+      <!-- Produits -->
+      <div class="mb-3">
+        <h5 class="fw-bold">Produits du pack</h5>
+        <div *ngFor="let prod of products" class="border rounded p-2 mb-2 bg-white shadow-sm">
+
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" [checked]="isSelected(prod)"
+              (change)="toggleProductSelection(prod)">
+            <label class="form-check-label">
+              {{ prod.name }} <span class="text-muted">- {{ prod.price }} €</span>
+            </label>
+          </div>
+
+          <!-- Quantité si produit sélectionné -->
+          <div *ngIf="isSelected(prod)" class="mt-2 ms-4">
+            <label class="form-label">Quantité</label>
+            <input type="number" min="1" class="form-control w-25" [value]="getProductQuantity(prod.id)"
+              (input)="updateQuantity(prod.id, +$any($event.target).value)">
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton -->
+      <button class="btn btn-success w-100" type="submit">
+        <i class="bi bi-box-seam"></i> Créer Pack
+      </button>
+
+    </form>
+
+  </div>
+</div>

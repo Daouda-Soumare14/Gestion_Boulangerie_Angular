@@ -1,0 +1,32 @@
+<!-- <div class="container mt-4">
+  <h2>Gestion des commandes</h2>
+
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Client</th>
+        <th>Total</th>
+        <th>Mode Paiement</th>
+        <th>Statut Livraison</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.user_id }}</td>
+        <td>{{ order.total }} €</td>
+        <td>{{ order.payment_mode }}</td>
+        <td>
+          <select [(ngModel)]="order.delivery_status"
+                  (change)="updateDelivery(order, order.delivery_status)"
+                  class="form-select">
+            <option *ngFor="let s of deliveryStatuses" [value]="s.key">
+              {{ s.label }}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

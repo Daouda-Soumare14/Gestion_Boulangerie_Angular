@@ -1,0 +1,56 @@
+<div class="content-wrapper px-4">
+    <div class="card">
+        <div class="card-header text-center bg-dark text-white">
+            <h1>Liste des Packs</h1>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Tableau des packs -->
+            <div>
+                <a [routerLink]="['/packs/create']" class="btn btn-primary my-3">
+                    Créer un Pack
+                </a>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Produits</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pack of packs">
+                                <td>{{ pack.id }}</td>
+                                <td>{{ pack.name }}</td>
+                                <td>{{ pack.price }}</td>
+                                <td>
+                                    <ul class="list-unstyled">
+                                        <li *ngFor="let p of pack.products" class="d-flex align-items-center mb-2">
+                                            <img *ngIf="p.photo" [src]="'http://localhost:8000/storage/' + p.photo"
+                                                alt="{{ p.name }}" class="me-2" width="50" height="50"
+                                                style="object-fit: cover; border-radius: 4px;">
+                                            <span>{{ p.name }} (Qty: {{ p.pivot.quantity }})</span>
+                                        </li>
+                                    </ul>
+                                </td>
+
+
+                                <td>
+                                    <a [routerLink]="['/packs/edit', pack.id]"
+                                        class="btn btn-sm btn-primary me-2">Modifier</a>
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="deletePack(pack.id)">Supprimer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

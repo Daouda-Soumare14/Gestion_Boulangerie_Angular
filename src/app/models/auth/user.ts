@@ -1,4 +1,6 @@
 export interface User {
+    data: string;
+    user(user: any): string;
     role: string;
     token: string;
     id: string;

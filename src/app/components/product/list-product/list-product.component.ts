@@ -18,6 +18,14 @@ export class ListProductComponent implements OnInit {
 
   products: Product[] = [];
   categories: Category[] = [];
+  currentPage = 1;
+  lastPage = 1;
+
+  filters = {
+    category_id: '',
+    min_price: '',
+    max_price: ''
+  };
 
   constructor(private productService: ProductService, private categoryService: CategoryService, private router: Router) { }
 
@@ -26,10 +34,10 @@ export class ListProductComponent implements OnInit {
     this.loadCategories();
   }
 
-  loadProducts(): void {
-    this.productService.getProducts().subscribe((res: any) => {
+  loadProducts(page: number = 1): void {
+    this.productService.getProducts(this.filters, page).subscribe((res: any) => {
       console.log(res);
-      this.products = res;
+      this.products = res.data;
     })
   }
 
@@ -47,6 +55,27 @@ export class ListProductComponent implements OnInit {
           this.router.navigate(['products']);
         }, error: () => alert('Erreur lors de la suppression du produit !!!')
       });
+    }
+  }
+
+  resetFilters(): void {
+    this.filters = {
+      category_id: '',
+      min_price: '',
+      max_price: ''
+    };
+    this.loadProducts();
+  }
+
+  nextPage() {
+    if (this.currentPage < this.lastPage) {
+      this.loadProducts(this.currentPage + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.loadProducts(this.currentPage - 1);
     }
   }
 }

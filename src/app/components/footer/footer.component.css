@@ -1,0 +1,21 @@
+footer {
+  background: #222;
+  color: #fff;
+  padding: 2rem 0;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #ffc107;
+}
+
+footer {
+    margin-top: 5rem;
+  margin-left: 250px; /* largeur de ta sidebar */
+  transition: margin-left 0.3s ease;
+  min-height: 30vh;
+  background-color: #f8f9fa;
+}
+

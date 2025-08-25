@@ -1,20 +1,38 @@
 <div class="content-wrapper px-4 py-4">
   <div class="row">
+
     <!-- Colonne de gauche - Liste des produits -->
     <div class="col-md-8">
-      <h4>Panier ({{ cartItems.length }})</h4>
-      <div *ngFor="let item of cartItems" class="border p-3 mb-3 rounded shadow-sm d-flex">
-        <img [src]="'http://localhost:8000/storage/' + item.product.photo" alt="{{ item.product.name }}" class="me-3" width="100" height="100" style="object-fit: cover;" />
-        <div class="flex-grow-1">
-          <h6 class="mb-1">{{ item.product.name }}</h6>
-          <div class="text-muted small mb-2">Disponible</div>
-          <div class="fw-bold fs-5 text-primary">{{ item.product.price | currency:'EUR' }}</div>
-          <div class="d-flex align-items-center mt-2">
-            <button class="btn btn-outline-secondary btn-sm me-2" (click)="decreaseQuantity(item)">−</button>
-            <span class="fw-bold">{{ item.quantity }}</span>
-            <button class="btn btn-outline-secondary btn-sm ms-2" (click)="increaseQuantity(item)">+</button>
-            <button class="btn btn-link text-danger ms-4" (click)="removeItem(item.product.id)">Supprimer</button>
+      <h4 class="mb-4 fw-bold bi bi-cart3 fs-3"> Panier ({{ cartItems.length }})</h4>
+      
+      <div *ngFor="let item of cartItems" 
+           class="border rounded-4 shadow-sm p-3 mb-4 d-flex align-items-center product-card-hover">
+        
+        <!-- Image produit -->
+        <img [src]="'http://localhost:8000/storage/' + item.product.photo" 
+             alt="{{ item.product.name }}" 
+             class="me-3 rounded-3" width="100" height="100" style="object-fit: cover;">
 
+        <!-- Infos produit -->
+        <div class="flex-grow-1">
+          <h6 class="mb-1 fw-bold">{{ item.product.name }}</h6>
+          <div class="text-muted small mb-2">
+            <i class="bi bi-check-circle-fill text-success me-1"></i> Disponible
+          </div>
+          <div class="fw-bold fs-5 text-primary">{{ item.product.price | currency:' Fcfa' }}</div>
+
+          <!-- Quantité + supprimer -->
+          <div class="d-flex align-items-center mt-3">
+            <button class="btn btn-outline-secondary btn-sm me-2 rounded-circle" (click)="decreaseQuantity(item)">
+              <i class="bi bi-dash"></i>
+            </button>
+            <span class="fw-bold px-2">{{ item.quantity }}</span>
+            <button class="btn btn-outline-secondary btn-sm ms-2 rounded-circle" (click)="increaseQuantity(item)">
+              <i class="bi bi-plus"></i>
+            </button>
+            <button class="btn btn-link text-danger ms-4" (click)="removeItem(item.product.id)">
+              <i class="bi bi-trash-fill"></i> Supprimer
+            </button>
           </div>
         </div>
       </div>
@@ -22,18 +40,22 @@
 
     <!-- Colonne de droite - Résumé -->
     <div class="col-md-4">
-      <div class="border rounded p-3 shadow-sm">
-        <h5>Résumé du panier</h5>
-        <div class="d-flex justify-content-between">
+      <div class="border rounded-4 shadow-sm p-4 bg-white sticky-top" style="top: 20px;">
+        <h5 class="fw-bold mb-3">Résumé du panier</h5>
+        <div class="d-flex justify-content-between mb-2">
           <span>Sous-total</span>
-          <strong>{{ getTotal() | currency:'EUR' }}</strong>
+          <strong>{{ getTotal() | currency:' Fcfa' }}</strong>
         </div>
-        <div class="text-muted small my-2">
-          Livraison gratuite à partir de 300€ d’achat.
+        <div class="text-muted small mb-3">
+          <i class="bi bi-truck me-1 fs-6"></i> Livraison gratuite à partir de 5000 Fcfa d’achat
         </div>
-        <button class="btn btn-warning w-100 mt-3">Commander ({{ getTotal() | currency:'EUR' }})</button>
+        <a class="btn btn-warning w-100 fw-bold shadow-sm" 
+           [routerLink]="['/checkout']" 
+           routerLinkActive="router-link-active">
+          <i class="bi bi-cart-check me-2"></i> Commander ({{ getTotal() | currency:' Fcfa' }})
+        </a>
       </div>
     </div>
+
   </div>
 </div>
-

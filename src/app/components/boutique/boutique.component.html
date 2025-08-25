@@ -1,0 +1,302 @@
+<div class="d-flex flex-column">
+  <!-- Main content -->
+  <div class="content-wrapper flex-grow-1 mt-2 bg-white">
+
+    <!-- Hero Header -->
+    <div class="text-center mb-4">
+      <h1 class="fw-bold text-danger">
+        <i class="bi bi-fire"></i> Nos Offres Spéciales du Moment <i class="bi bi-fire"></i>
+      </h1>
+      <p class="text-muted fs-5">
+        Profitez de réductions exceptionnelles sur vos produits préférés.
+        Dépêchez-vous, les stocks sont limités !
+      </p>
+    </div>
+
+    <div class="container mt-4 mb-5">
+      <div class="row g-4">
+        <div class="col-md-6" *ngFor="let product of heroProducts">
+          <div class="card shadow-lg border-0 position-relative promo-card">
+            <img [src]="'http://localhost:8000/storage/' + product.photo" class="card-img-top promo-img"
+              alt="{{ product.name }}">
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
+              <p class="card-text text-muted">{{ product.description }}</p>
+              <button class="btn btn-warning btn-lg shadow-sm" (click)="scrollToProducts()">
+                <i class="bi bi-eye"></i> Voir les produits
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMOTIONS -->
+    <!-- <div class="container mt-4 mb-5" *ngIf="promotions.length > 0">
+      <div class="row g-4">
+        <div class="col-md-6" *ngFor="let promo of promotions">
+          <div class="card shadow-lg border-0 position-relative promo-card">
+
+             Badge promo 
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2 px-3 py-2 fs-6 shadow">
+              <i class="bi bi-stars"></i> Promo
+            </span>
+
+             Image du premier produit 
+            <img *ngIf="promo.products.length > 0" [src]="'http://localhost:8000/storage/' + promo.products[0].photo"
+              class="card-img-top promo-img" alt="{{ promo.title }}">
+
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold text-dark">{{ promo.title }}</h5>
+              <p class="card-text text-muted">{{ promo.description }}</p>
+              <button class="btn btn-warning btn-lg shadow-sm" (click)="scrollToProducts()">
+                <i class="bi bi-eye"></i> Voir les produits
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+     FIN PROMOTIONS 
+
+
+    <!- Section Produits + Sidebar -->
+    <div class="container-fluid py-5 mt-5"
+      style="background: linear-gradient(135deg, #fffaf0 0%, #ffe4c4 50%, #ffd8a8 100%);">
+      <div class="container">
+
+        <!-- Titre accrocheur -->
+        <div class="text-center mb-5">
+          <h2 class="fw-bold text-dark display-5">
+            <i class="bi bi-cart3"></i> Découvrez Nos Produits
+          </h2>
+          <p class="text-muted fs-5">
+            Parcourez notre catalogue et trouvez les meilleures offres adaptées à vos envies.
+          </p>
+        </div>
+
+        <div class="row g-4">
+
+          <!-- Sidebar filtres -->
+          <aside class="col-lg-3 mb-4">
+            <div class="card shadow-sm border-0 sticky-top rounded-4" style="top: 80px;">
+              <div class="card-body">
+                <h5 class="card-title fw-bold mb-3 fs-4 text-primary">
+                  <i class="bi bi-search"></i> Filtrer les produits
+                </h5>
+
+                <!-- Catégorie -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Catégorie</label>
+                  <select class="form-select rounded-3" [(ngModel)]="filters.category_id" (change)="loadProducts()">
+                    <option value="">Toutes les catégories</option>
+                    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                  </select>
+                </div>
+
+                <!-- Prix Min/Max -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Prix Min</label>
+                  <input type="number" class="form-control rounded-3" [(ngModel)]="filters.min_price"
+                    (input)="loadProducts()" placeholder="Min">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Prix Max</label>
+                  <input type="number" class="form-control rounded-3" [(ngModel)]="filters.max_price"
+                    (input)="loadProducts()" placeholder="Max">
+                </div>
+
+                <button class="btn btn-danger w-100 mt-2 rounded-3 shadow-sm" (click)="resetFilters()">
+                  <i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+                </button>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Produits -->
+          <section class="col-lg-9">
+            <div class="row g-4">
+              <div *ngFor="let product of products" class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card position-relative">
+
+                  <!-- Badge Promo -->
+                  <span *ngIf="isProductInPromo(product)"
+                    class="badge bg-danger position-absolute top-0 start-0 m-2 px-3 py-2 fs-6 shadow">
+                    <i class="bi bi-stars"></i> Promo
+                  </span>
+
+                  <!-- Image du produit -->
+                  <div class="img-wrapper" (click)="openItemModal(product)" style="cursor:pointer;">
+                    <img *ngIf="product.photo" [src]="'http://localhost:8000/storage/' + product.photo"
+                      class="card-img-top" alt="{{ product.name }}">
+                  </div>
+
+                  <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
+                    <p class="text-primary fw-bold fs-5">{{ product.price }} Fcfa</p>
+                    <small class="text-muted mb-2">Allergènes: {{ product.allergens || 'Aucun' }}</small>
+                    <p class="card-text mb-2 flex-grow-1">
+                      <i class="bi bi-box-seam"></i> Stock: {{ product.stock }}<br>
+                      <i class="bi bi-tags"></i> Catégorie: {{ product.category.name }}
+                    </p>
+                    <button class="btn btn-primary w-100 mt-auto rounded-3 shadow-sm add-cart-btn"
+                      (click)="addToCart(product)" [disabled]="product.stock === 0">
+                      <i class="bi bi-cart-plus"></i> Ajouter au panier
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!-- Packs -->
+              <div *ngFor="let pack of packs" class="col-md-4">
+                <div class="card h-100 shadow-sm rounded-4 overflow-hidden pack-card position-relative">
+                  <!-- Badge Pack -->
+                  <span class="badge position-absolute top-0 start-0 m-2 px-3 py-2 fs-6 shadow"
+                    [ngClass]="isPackInPromo(pack) ? 'bg-danger' : 'bg-success'">
+                    <i class="bi" [ngClass]="isPackInPromo(pack) ? 'bi-stars' : 'bi-box-seam'"></i>
+                    {{ isPackInPromo(pack) ? 'Promo' : 'Pack' }}
+                  </span>
+
+
+                  <!-- Images des produits dans le pack -->
+                  <div class="d-flex flex-wrap justify-content-center p-2">
+                    <img *ngFor="let p of pack.products" [src]="'http://localhost:8000/storage/' + p.photo"
+                      alt="{{ p.name }}" class="m-1 product-hover" style="width: 80px; height: 80px; object-fit: cover;"
+                      (click)="openItemModal(pack)">
+                  </div>
+
+                  <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title fw-bold text-dark">{{ pack.name }}</h5>
+                    <p class="text-primary fw-bold fs-5">{{ pack.price }} Fcfa</p>
+                    <p class="card-text mb-2 flex-grow-1">
+                      <i class="bi bi-box-seam"></i> Contient:
+                      <span *ngFor="let p of pack.products; let last = last">
+                        {{ p.name }}<span *ngIf="!last">, </span>
+                      </span>
+                    </p>
+                    <button class="btn btn-success w-100 mt-auto rounded-3 shadow-sm add-cart-btn"
+                      (click)="addPackToCart(pack)">
+                      <i class="bi bi-cart-plus"></i> Ajouter le pack
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- fin pack -->
+
+
+            <!-- Modal Produit / Pack -->
+            <div class="modal fade" id="itemModal" tabindex="-1">
+              <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content rounded-4 shadow-lg">
+
+                  <!-- Header -->
+                  <div class="modal-header border-0 bg-primary text-white">
+                    <h5 class="modal-title fw-bold">{{ selectedItem?.name }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <!-- Body -->
+                  <div class="modal-body p-4" *ngIf="selectedItem">
+                    <div class="row g-4">
+                      <!-- Infos à gauche -->
+                      <div class="col-md-6">
+                        <p class="mb-2"><strong>Prix :</strong> <span class="text-primary fw-bold">{{ selectedItem.price
+                            }} Fcfa</span></p>
+
+                        <ng-container *ngIf="!isPack(selectedItem)">
+                          <p class="mb-2"><strong>Stock :</strong> {{ selectedItem.stock }}</p>
+                          <p class="mb-2" *ngIf="selectedItem.allergens"><strong>Allergènes :</strong> {{
+                            selectedItem.allergens }}</p>
+                          <p class="mb-2" *ngIf="selectedItem.category"><strong>Catégorie :</strong> {{
+                            selectedItem.category.name }}</p>
+                        </ng-container>
+
+                        <p *ngIf="selectedItem.description" class="text-muted mt-3">{{ selectedItem.description }}</p>
+                      </div>
+
+                      <!-- Images à droite -->
+                      <div class="col-md-6 d-flex flex-column">
+                        <ng-container *ngIf="isPack(selectedItem); else singleImage">
+                          <!-- Slider horizontal pour pack -->
+                          <div class="d-flex overflow-auto gap-3 py-2" style="scroll-behavior: smooth;">
+                            <div *ngFor="let p of selectedItem.products"
+                              class="card p-2 shadow-sm flex-shrink-0 product-hover-zoom"
+                              style="width: 120px; cursor: pointer; transition: transform 0.3s;"
+                              (click)="openZoom('http://localhost:8000/storage/' + p.photo)">
+                              <img [src]="'http://localhost:8000/storage/' + p.photo" alt="{{ p.name }}"
+                                class="img-fluid rounded-3" style="height: 120px; object-fit: cover;">
+                              <div class="text-center mt-2 fw-semibold text-truncate">{{ p.name }}</div>
+                            </div>
+                          </div>
+                        </ng-container>
+
+                        <ng-template #singleImage>
+                          <!-- Produit simple -->
+                          <img *ngIf="selectedItem.photo" [src]="'http://localhost:8000/storage/' + selectedItem.photo"
+                            alt="{{ selectedItem.name }}" class="img-fluid rounded-4 w-100 mt-auto product-hover-single"
+                            style="height: 300px; object-fit: cover; cursor: pointer; transition: transform 0.3s;"
+                            (click)="openZoom('http://localhost:8000/storage/' + selectedItem.photo)">
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Footer -->
+                  <div class="modal-footer border-0">
+                    <button class="btn btn-primary btn-lg shadow-sm" (click)="addItemToCart()">
+                      <i class="bi bi-cart-plus me-2"></i> Ajouter au panier
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-lg" data-bs-dismiss="modal">
+                      <i class="bi bi-x-circle me-2"></i> Fermer
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- fin modal principal -->
+
+
+
+            <!-- Modal Zoom Image -->
+            <div class="modal fade" id="zoomModal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content rounded-4 shadow-lg">
+                  <div class="modal-body p-0 text-center">
+                    <img [src]="zoomedImage" alt="Zoomed" class="img-fluid rounded" style="max-height: 80vh;">
+                  </div>
+                  <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-outline-light btn-lg" data-bs-dismiss="modal">
+                      <i class="bi bi-x-circle me-2"></i> Fermer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- fin modal zoom  -->
+
+
+
+            <!-- Pagination -->
+            <nav class="d-flex justify-content-center mt-5">
+              <button class="btn btn-outline-primary me-2 rounded-3" (click)="prevPage()"
+                [disabled]="currentPage === 1">
+                <i class="bi bi-chevron-left"></i> Précédent
+              </button>
+              <span class="align-self-center mx-2">Page {{ currentPage }} / {{ lastPage }}</span>
+              <button class="btn btn-outline-primary ms-2 rounded-3" (click)="nextPage()"
+                [disabled]="currentPage === lastPage">
+                Suivant <i class="bi bi-chevron-right"></i>
+              </button>
+            </nav>
+          </section>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -12,7 +12,7 @@ export class CategoryService {
 
   constructor(private http: HttpClient) { }
 
-  getAuthHeaders(): HttpHeaders {
+  getHttpHeaders(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('auth_token')}`
     });
@@ -20,7 +20,7 @@ export class CategoryService {
 
   getCategories(): Observable<Category[]> {
       return this.http.get<Category[]>(this.apiUrl, {
-        headers: this.getAuthHeaders()
+        headers: this.getHttpHeaders()
       });
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { tap } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { User } from '../../models/auth/user';
 
 @Injectable({
@@ -13,6 +13,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  public currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
   register(data: User) {
     return this.http.post<User>(`${this.apiUrl}register`, data)
   }
@@ -21,10 +24,12 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}login`, loginForm).pipe(
       tap({
         next: (res) => {
-          if (res.token && res.role) {
-            console.log(res);
+          console.log('Login API response:', res);
+          if (res.token, res.data) {
             localStorage.setItem('auth_token', res.token);
             // localStorage.setItem('user_role', res.role);
+            localStorage.setItem('current_user', JSON.stringify(res.data)); // stocke user
+            this.currentUserSubject.next(res.data);
           } else {
             alert('token ou role manquant')
           }
@@ -42,6 +47,8 @@ export class AuthService {
       tap(() => {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_role');
+        localStorage.removeItem('current_user'); // supprime user
+        this.currentUserSubject.next(null); 
       })
     );
   }
@@ -66,6 +73,10 @@ export class AuthService {
 
   getRole(): string | null {
     return localStorage.getItem('user_role');
+  }
+
+  getCurrentUser(): any {
+    return this.currentUserSubject.value;
   }
 }
 
