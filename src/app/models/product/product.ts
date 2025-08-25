@@ -1,4 +1,6 @@
 import { Category } from "../category/category";
+import { Pack } from "../pack/pack";
+import { Promotion } from "../promotion/promotion";
 
 export interface Product {
     id: number;
@@ -10,4 +12,6 @@ export interface Product {
     stock: number;             
     photo?: string;            
     allergens?: string; 
+    promotions?: Promotion[];
+    packs?: Pack[];
 }

@@ -1,0 +1,55 @@
+<div class="container mt-5 bg-light p-4 rounded shadow border col-6">
+    <div class="card-body">
+        <h2 class="text-center text-success">Créer une Promotion</h2>
+
+        <form [formGroup]="promoForm" (ngSubmit)="createPromotion()">
+
+            <!-- Nom -->
+            <div class="mb-3">
+                <label>Nom</label>
+                <input type="text" class="form-control" formControlName="name">
+            </div>
+
+            <!-- Type réduction -->
+            <div class="mb-3">
+                <label>Type de réduction</label>
+                <select class="form-control" formControlName="discount_type">
+                    <option value="pourcentage">Pourcentage</option>
+                    <option value="montant">Montant</option>
+                </select>
+            </div>
+
+            <!-- Valeur réduction -->
+            <div class="mb-3">
+                <label>Valeur de réduction</label>
+                <input type="number" class="form-control" formControlName="discount_value">
+            </div>
+
+            <!-- Dates -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Date début</label>
+                    <input type="date" class="form-control" formControlName="start_date">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Date fin</label>
+                    <input type="date" class="form-control" formControlName="end_date">
+                </div>
+            </div>
+
+            <!-- Sélection des produits -->
+            <h5 class="mt-3">Produits concernés</h5>
+            <div class="d-flex flex-wrap gap-3">
+                <div *ngFor="let prod of products" class="text-center border p-2 rounded">
+                    <input type="checkbox" [checked]="isSelected(prod)" (change)="toggleProduct(prod)">
+                    <img [src]="'http://localhost:8000/storage/' + prod.photo" alt="{{ prod.name }}" width="80"
+                        height="80" loading="lazy" class="img-thumbnail rounded d-block mx-auto">
+
+                    <small>{{ prod.name }}</small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3 form-control">Créer</button>
+        </form>
+    </div>
+</div>

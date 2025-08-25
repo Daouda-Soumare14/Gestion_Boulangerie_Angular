@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../../models/product/product';
+import { ToastrService } from 'ngx-toastr';
+
 
 export interface CartItem {
   product: Product;
@@ -23,9 +25,15 @@ export class CartService {
   // observable pour que les composants s'abonnent
   cart$ = this.cartSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastr: ToastrService) {
     this.loadCartFromLocalStorage();
   }
+
+   private getHttpHeaders(): HttpHeaders {
+      return new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+      })
+    }
 
   // Corrigé : chargement depuis localStorage
   private loadCartFromLocalStorage() {
@@ -44,19 +52,21 @@ export class CartService {
     return [...this.cartItems]; // copie pour immutabilité
   }
 
+
   addToCart(product: Product, quantity: number = 1) {
       const correctedProduct = { ...product, price: Number(product.price) };
     const index = this.cartItems.findIndex(item => item.product.id === product.id);
 
     if (index !== -1) {
       this.cartItems[index].quantity += quantity;
-      //this.toastr.info(`Quantité mise a jour pour ${product.name}`, 'Panier');
+      this.toastr.info(`Quantité mise a jour pour ${product.name}`, 'Panier');
     } else {
       this.cartItems.push({ product: correctedProduct, quantity });
-      //this.toastr.success(`${product.name} ajouter au panier`, 'Panier')
+      this.toastr.success(`${product.name} ajouter au panier`, 'Panier')
     }
 
     this.saveCartToLocalStorage();
+    this.cartSubject.next(this.cartItems);
 
     // synchroniser avec le serveur
     this.syncCartToServer().subscribe({
@@ -74,13 +84,14 @@ export class CartService {
 
       if (quantity <= 0) { // si la nouvelle quantite est 0 ou negative
         this.cartItems.splice(index, 1); //  supprime un element a la position index
-        //this.toastr.warning(`${productName} retiré du panier`, 'Panier')
+        this.toastr.warning(`${productName} retiré du panier`, 'Panier')
       } else {
         this.cartItems[index].quantity = quantity; // quantite positive on met a jour la quantite dans le panier
-        //this.toastr.info(`Quantité mise a jour pour ${productName}`, 'Panier')
+        this.toastr.info(`Quantité mise a jour pour ${productName}`, 'Panier')
       }
 
       this.saveCartToLocalStorage();
+      this.cartSubject.next(this.cartItems);
 
       // synchroniser avec le serveur
       this.syncCartToServer().subscribe({
@@ -120,8 +131,7 @@ export class CartService {
         next: () => console.log('Panier synchronisé avec le serveur'),
         error: err => console.error('Erreur de sync', err)
       });
-
-      //this.toastr.warning(`${productName} supprimé du panier`, 'Panier');
+      this.toastr.warning(`${productName} supprimé du panier`, 'Panier');
     }
   }
 
@@ -130,7 +140,11 @@ export class CartService {
     this.cartItems = [];
     localStorage.removeItem(this.cartKey);
     this.cartSubject.next(this.cartItems);
-    //this.toastr.info('Panier vidé avec succès', 'Panier')
+    this.toastr.info('Panier vidé avec succès', 'Panier')
+  }
+
+  getTotal(): number {
+    return this.cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   }
 
   // -------------------
@@ -139,16 +153,26 @@ export class CartService {
 
   // Récupérer le panier du serveur Laravel (lié à l’utilisateur connecté).
   fetchCartFromServer(): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(`${this.apiUrl}/cart`).pipe(
+    return this.http.get<CartItem[]>(`${this.apiUrl}/cart`,
+      {headers: this.getHttpHeaders()}
+    ).pipe(
       tap(serverCart => {
         this.cartItems = serverCart;
         this.saveCartToLocalStorage();
-      })
+      }),
+      tap(() => this.toastr.success('Panier récupéré depuis le serveur', 'Panier'))
     );
   }
 
   syncCartToServer(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cart/sync`, { items: this.cartItems });
+    return this.http.post(`${this.apiUrl}/cart/sync`,
+      { items: this.cartItems },
+      { headers: this.getHttpHeaders() }
+    ).pipe(
+      tap(() => this.toastr.success('Panier synchronisé avec le serveur', 'Panier')),
+      tap(() => this.saveCartToLocalStorage()), // mettre à jour le localStorage
+      tap(() => this.cartSubject.next(this.cartItems)) // notifier les abonnés
+    );
   }
 }
 

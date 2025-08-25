@@ -1,20 +1,21 @@
+/* Sidebar */
 .sidebar-modern {
   width: 250px;
   height: 100vh;
-  background-color: #1e1e2f;
-  color: white;
+  background-color: white;
+  color: #1e1e2f;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  left: 0;
+  position: fixed; /* reste toujours visible à gauche */
   top: 0;
+  left: 0;
   padding: 1.5rem 1rem;
-  z-index: 1000;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1020;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-modern .sidebar-header h5 {
-  color: #ffffff;
+  color: #1e1e2f;
   margin: 0;
   font-weight: bold;
   font-size: 1.3rem;
@@ -22,21 +23,23 @@
 }
 
 .sidebar-modern .nav-link {
-  color: #cfd2dc;
+  color: #1e1e2f;
   padding: 10px 12px;
   border-radius: 8px;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: bold;
   transition: all 0.2s ease-in-out;
+  background-color: #f2f2f2 !important;
 }
 
 .sidebar-modern .nav-link:hover,
 .sidebar-modern .nav-link.active {
-  background-color: #2d2f46;
-  color: white;
-  font-weight: 500;
+  background-color: #ffc107 !important;
+  color: #1e1e2f;
+  font-weight: bold;
 }
 
 .sidebar-modern .logout-section {
@@ -44,10 +47,54 @@
 }
 
 
-
+/* Contenu principal */
 .main-content-modern {
-  margin-left: 250px; /* Décale le contenu à droite de la sidebar */
+  margin-left: 250px; /* espace pour la sidebar */
+  margin-top: 56px; /* hauteur navbar sticky */
   padding: 2rem;
-  width: 100%;
 }
+
+/* Navbar fixe en haut et pleine largeur */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* pleine largeur */
+  z-index: 1050; /* au-dessus de la sidebar */
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Barre de recherche large */
+.navbar .search-bar {
+  margin-left: 50rem;
+  max-width: 500px; /* tu peux ajuster */
+}
+
+/* Badge panier */
+.navbar .cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  font-size: 0.75rem;
+}
+
+.sidebar-modern .nav-link {
+  position: relative; /* essentiel pour position-absolute du badge */
+}
+
+.sidebar-modern .nav-link .badge {
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+
+
+
+
 

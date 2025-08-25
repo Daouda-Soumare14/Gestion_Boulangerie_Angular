@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product/product.service';
 import { CategoryService } from '../../../services/category/category.service';
-import { Product } from '../../../models/product/product';
 import { Category } from '../../../models/category/category';
 
 @Component({
@@ -12,53 +11,58 @@ import { Category } from '../../../models/category/category';
   standalone: true,
   imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './edit-product.component.html',
-  styleUrl: './edit-product.component.css'
+  styleUrls: ['./edit-product.component.css']
 })
 export class EditProductComponent implements OnInit {
 
-  productId!: number;
   productForm!: FormGroup;
-
-
   categories: Category[] = [];
+  productId!: number;
 
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private categoryService: CategoryService,
-    private route: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(4)]],
-      price: [0, Validators.required],
-      quantity: [0, Validators.required],
-      image: [null], 
-      content: ['', Validators.required],
-      category_id: [0, Validators.required]
-    })
-    this.productId = this.route.snapshot.params['id'];
-  
-
-    // charger les categories
-    this.categoryService.getCategories().subscribe((res: any) => {
-      this.categories = res.data;
+      price: [0, [Validators.required, Validators.min(0)]],
+      stock: [0, [Validators.required, Validators.min(0)]],
+      description: [''],
+      category_id: [null, Validators.required],
+      photo: [null],
+      allergens: ['']
     });
 
-    // charger les donnees du produit
+    this.productId = this.route.snapshot.params['id'];
+
+    // charger les catégories
+    this.categoryService.getCategories().subscribe((res: any) => {
+      this.categories = res.data ?? res;
+    });
+
+    // charger les données du produit
     this.productService.getProductById(this.productId).subscribe((res: any) => {
-      const product: Product = res.data;
-        this.productForm.patchValue({
-          name: product.name,
-          price: product.price,
-        });
+      const product = res.data;
+      this.productForm.patchValue({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+        description: product.description,
+        category_id: product.category_id,
+        allergens: product.allergens
       });
+    });
   }
 
   onFileSelected(event: any) {
-    this.productForm.patchValue({ image: event.target.files[0] });
+    if (event.target.files && event.target.files.length > 0) {
+      this.productForm.patchValue({ photo: event.target.files[0] });
+    }
   }
 
   updateProduct() {
@@ -72,27 +76,24 @@ export class EditProductComponent implements OnInit {
 
     formData.append('name', form.name);
     formData.append('price', form.price.toString());
-    formData.append('reference', form.reference);
-    formData.append('quantity', form.quantity.toString());
+    formData.append('stock', form.stock.toString());
     formData.append('category_id', form.category_id.toString());
-    formData.append('content', form.content);
+    formData.append('description', form.description || '');
+    formData.append('allergens', form.allergens || '');
 
-    if (form.image instanceof File) {
-      formData.append('image', form.image);
+    if (form.photo instanceof File) {
+      formData.append('photo', form.photo);
     }
 
     this.productService.editProduct(this.productId, formData).subscribe({
-      next: (response) => {
-        console.log('Produit mis à jour avec succès', response);
+      next: () => {
+        console.log('Produit mis à jour avec succès');
         this.router.navigate(['/products']);
       },
       error: (error) => {
-        console.error('Erreur lors de la mise à jour du produit:', error);
-        alert(JSON.stringify(error.error)); // Pour voir le détail de l'erreur Laravel
+        console.error('Erreur lors de la mise à jour du produit', error);
+        alert(JSON.stringify(error.error));
       }
     });
-
   }
-
-
 }

@@ -1,0 +1,113 @@
+/* Boutons */
+.btn-primary {
+  transition: transform 0.2s;
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+.add-cart-btn, 
+.product-card .add-cart-btn, 
+.pack-card .add-cart-btn {
+  transition: all 0.3s ease;
+}
+.add-cart-btn:hover, 
+.product-card .add-cart-btn:hover, 
+.pack-card .add-cart-btn:hover {
+  background-color: #ffc107 !important;
+  transform: scale(1.05);
+}
+
+/* Titres et textes */
+.card-title {
+  font-size: 1.1rem;
+}
+.card-body p, 
+.card-body small {
+  font-size: 0.9rem;
+}
+
+/* Badge promo */
+.badge {
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+
+/* Images promos */
+.promo-img {
+  height: 350px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.promo-card:hover .promo-img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Wrapper images produit */
+.product-card .img-wrapper {
+  overflow: hidden;
+  height: 220px;
+}
+.product-card img, 
+.pack-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.product-card:hover img, 
+.pack-card:hover img {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* Effet hover sur cartes (produits + packs) */
+.product-card, 
+.pack-card {
+  transition: all 0.3s ease;
+}
+.product-card:hover, 
+.pack-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal zoom */
+.product-modal-img-wrapper {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+.product-modal-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Zoom au survol direct */
+.product-hover-single:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+.product-hover:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* Modal styles */
+#zoomModal .modal-content {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#zoomModal .btn-outline-light {
+  color: #fff;
+  border-color: #fff;
+}
+#zoomModal .btn-outline-light:hover {
+  background-color: #fff;
+  color: #000;
+}
