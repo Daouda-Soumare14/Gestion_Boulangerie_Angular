@@ -1,39 +1,83 @@
-<div *ngIf="isLoggedIn()">
-  <nav class="navbar navbar-expand-lg navbar-light shadow-sm bg-white">
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light shadow-sm bg-white sticky-top">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold fs-2 text-warning" [routerLink]="['/boutique']" routerLinkActive="router-link-active">
-        <i class="bi bi-basket2-fill"></i> Boulangerie
+
+      <!-- Logo -->
+      <a class="navbar-brand fw-bold fs-2 text-warning d-flex align-items-center" [routerLink]="['/boutique']">
+        <i class="bi bi-basket2-fill me-2 fs-2"></i> Boulangerie
       </a>
+
+      <!-- Hamburger mobile -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Contenu navbar -->
       <div class="collapse navbar-collapse" id="navbarContent">
 
         <!-- Barre de recherche -->
-        <form class="d-flex ms-3 me-3 flex-grow-1" (submit)="$event.preventDefault()">
-          <input class="form-control search-bar" type="search" placeholder="Recherchez un produit..."
+        <form class="d-flex flex-grow-1 mx-3" (submit)="$event.preventDefault()">
+          <input type="search" class="form-control rounded-pill shadow-sm border-0 px-4"
+            placeholder="Recherchez un produit..." [(ngModel)]="filters.search" name="search" (input)="onSearchChange()"
             aria-label="Recherche">
+          <button class="btn btn-warning ms-2 rounded-pill" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
         </form>
 
-        <!-- Panier + Connexion -->
-        <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
-          <li class="nav-item me-3 position-relative">
-            <a class="nav-link" href="#" (click)="goToCart()">
-              <i class="bi bi-cart3 fs-3"></i>
-              <span class="badge bg-danger cart-badge">{{ cartCount }}</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-primary d-flex align-items-center" href="#" (click)="goToLogin()">
-              <i class="bi bi-box-arrow-in-right me-1"></i> Connexion
-            </a>
-          </li>
-        </ul>
 
+        <!-- Liens panier et profil -->
+        <ul class="navbar-nav ms-auto d-flex align-items-center">
+
+          <!-- Panier -->
+          <li class="nav-item me-3 position-relative">
+            <a class="nav-link position-relative text-dark fs-4" [routerLink]="['/cart']">
+              <i class="bi bi-cart3"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cartCount }}
+              </span>
+            </a>
+          </li>
+
+          <!-- Si pas connecté -->
+          <li class="nav-item" *ngIf="!isLoggedIn()">
+            <button class="btn btn-primary d-flex align-items-center px-4 py-2 shadow-sm" data-bs-toggle="modal"
+              data-bs-target="#authModal">
+              <i class="bi bi-box-arrow-in-right me-2"></i> Connexion
+            </button>
+          </li>
+
+          <!-- Si connecté -->
+          <li class="nav-item dropdown" *ngIf="isLoggedIn()">
+            <a class="nav-link dropdown-toggle d-flex align-items-center fs-5" href="#" id="userDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle fs-3 me-2"></i>
+              {{ userName || 'Mon compte' }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+              <li>
+                <a class="dropdown-item d-flex justify-content-between align-items-center" [routerLink]="['/cart']">
+                  Panier
+                  <span class="badge bg-danger rounded-pill">{{ cartCount }}</span>
+                </a>
+              </li>
+              <li><a class="dropdown-item" [routerLink]="['/checkout']">Mes commandes</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <button class="dropdown-item text-danger d-flex align-items-center" (click)="logout()">
+                  <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+                </button>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
       </div>
     </div>
   </nav>
+
 
 
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../../models/auth/user';
 
 @Injectable({
@@ -58,14 +58,22 @@ export class AuthService {
   }
 
 
-  me() {
-    return this.http.get<any>(`${this.apiUrl}me`, {
+  getUserName(): string {
+    const user = localStorage.getItem('current_user');
+    if (user) {
+      const u = JSON.parse(user);
+      return u.name || u.email || '';
+    }
+    return '';
+  }
+
+  me(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/me`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('auth_token')}` }
     }).pipe(
       tap(res => {
-        if (res.role) {
-          localStorage.setItem('user_role', res.role);
-        }
+        if (res.role) localStorage.setItem('user_role', res.role);
+        localStorage.setItem('current_user', JSON.stringify(res));
       })
     );
   }

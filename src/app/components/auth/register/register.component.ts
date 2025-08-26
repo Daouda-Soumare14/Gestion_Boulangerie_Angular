@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -35,13 +35,23 @@ export class RegisterComponent {
 
 
   register() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.router.navigate(['login']);
-      }, error: () => {
-        alert('Erreur lors de l\'inscription')
+        alert('Inscription réussie ! Veuillez vous connecter.');
+        // Passer automatiquement à l'onglet login
+        const modalComponent = document.querySelector('app-auth-modal') as any;
+        if (modalComponent) {
+          modalComponent.activeTab = 'login';
+        }
+      },
+      error: () => {
+        alert('Erreur lors de l\'inscription.');
       }
-    })
+    });
   }
-
 }

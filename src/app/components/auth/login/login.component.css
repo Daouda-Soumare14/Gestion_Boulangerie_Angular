@@ -1,0 +1,34 @@
+/* Supprime tout fond derrière le formulaire */
+body, html {
+  background-color: transparent !important;
+}
+
+/* Carte de login */
+.login-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Inputs */
+.input-group .form-control {
+  height: 45px;
+  font-size: 0.95rem;
+}
+
+/* Bouton */
+.btn-warning {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.65rem;
+}
+
+/* Icônes dans input */
+.input-group-text {
+  width: 45px;
+  justify-content: center;
+  font-size: 1.1rem;
+}

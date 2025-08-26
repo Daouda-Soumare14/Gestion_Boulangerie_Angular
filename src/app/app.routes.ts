@@ -16,29 +16,27 @@ import { AddPormotionComponent } from './components/promotion/add-pormotion/add-
 import { UpdatePormotionComponent } from './components/promotion/update-pormotion/update-pormotion.component';
 
 export const routes: Routes = [
-    { path: '', pathMatch: 'full', component: BoutiqueComponent, canActivate: [authGuard] }, // Redirection vers la boutique par défaut
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-
+    
     // products
     { path: 'products', component: ListProductComponent, canActivate: [authGuard] },
     { path: 'create-product', component: AddProductComponent, canActivate: [authGuard] },
     { path: 'edit-product/:id', component: EditProductComponent, canActivate: [authGuard] },
-
+    
     // promotions
-    { path: 'promotions', component: ListPormotionComponent },
-    { path: 'promotions/create', component: AddPormotionComponent },
-    { path: 'promotions/update/:id', component: UpdatePormotionComponent },
-
+    { path: 'promotions', component: ListPormotionComponent, canActivate: [authGuard] },
+    { path: 'promotions/create', component: AddPormotionComponent, canActivate: [authGuard] },
+    { path: 'promotions/update/:id', component: UpdatePormotionComponent, canActivate: [authGuard] },
+    
     // pack
-    { path: 'packs', component: ListPackComponent },            
-    { path: 'packs/create', component: CreatePackComponent },   
-    { path: 'packs/:id/edit', component: UpdatePackComponent },   
-
+    { path: 'packs', component: ListPackComponent, canActivate: [authGuard] },            
+    { path: 'packs/create', component: CreatePackComponent, canActivate: [authGuard] },   
+    { path: 'packs/:id/edit', component: UpdatePackComponent, canActivate: [authGuard] },   
+    
     // cart & commande
     { path: 'cart', component: CartComponent, canActivate: [authGuard] },
     { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
-
+    
     // boutique
-    { path: 'boutique', component: BoutiqueComponent, canActivate: [authGuard] },
+    { path: '', pathMatch: 'full', component: BoutiqueComponent }, 
+    { path: 'boutique', component: BoutiqueComponent }
 ];

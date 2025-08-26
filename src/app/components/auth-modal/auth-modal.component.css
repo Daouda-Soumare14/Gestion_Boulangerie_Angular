@@ -1,0 +1,16 @@
+/* Limite la largeur et garde le modal compact */
+.modal-dialog {
+  max-width: 700px;
+}
+
+/* Corps du modal avec scroll si nécessaire */
+.modal-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* Champs plus larges et harmonieux */
+app-login, app-register {
+  width: 100%;
+}
+

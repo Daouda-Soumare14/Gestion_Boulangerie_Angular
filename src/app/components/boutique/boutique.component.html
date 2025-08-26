@@ -65,6 +65,9 @@
       style="background: linear-gradient(135deg, #fffaf0 0%, #ffe4c4 50%, #ffd8a8 100%);">
       <div class="container">
 
+        <app-sidebar (searchChange)="onSearch($event)"></app-sidebar>
+
+
         <!-- Titre accrocheur -->
         <div class="text-center mb-5">
           <h2 class="fw-bold text-dark display-5">
