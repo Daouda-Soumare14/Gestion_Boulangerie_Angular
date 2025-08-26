@@ -95,6 +95,34 @@
 
 
 
+/* Masquer la sidebar sur les écrans < 992px */
+@media (max-width: 991.98px) {
+  .sidebar-modern {
+    display: none;
+  }
+
+  .main-content-modern {
+    margin-left: 0; /* prend toute la largeur */
+  }
+}
+
+/* Sur desktop, laisser la marge pour la sidebar */
+@media (min-width: 992px) {
+  .main-content-modern {
+    margin-left: 250px; /* largeur de la sidebar */
+  }
+}
+
+/* Masquer la sidebar et réinitialiser le margin sur mobile */
+@media (max-width: 991.98px) {
+  .sidebar-modern {
+    display: none;
+  }
+
+  .main-content-modern {
+    margin-left: 0 !important; /* annule la marge du desktop */
+  }
+}
 
 
 

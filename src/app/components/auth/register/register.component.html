@@ -1,66 +1,80 @@
-<div class="d-flex justify-content-center align-items-center min-vh-100">
-  <div class="bg-light text-dark shadow-lg rounded-4 p-4 col-11 col-sm-8 col-md-6 col-lg-4">
+<div class="d-flex justify-content-center align-items-center">
+  <div class="login-card bg-white text-dark shadow-lg rounded-4 p-5 w-100" style="max-width: 500px;">
 
-    <h2 class="text-center mb-4">Créer un compte</h2>
+    <!-- Titre -->
+    <div class="text-center mb-4">
+      <i class="bi bi-pencil-square text-warning" style="font-size:3rem;"></i>
+      <h2 class="fw-bold mt-2">Créer un compte</h2>
+      <p class="text-muted">Remplissez le formulaire pour créer votre compte</p>
+    </div>
 
+    <!-- Formulaire -->
     <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-      <div class="mb-3">
+      <!-- Nom -->
+      <div class="mb-3 position-relative">
         <label for="name" class="form-label">Nom</label>
-        <input type="text" id="name" class="form-control" formControlName="name" required>
-        <div>
-          <small class="text-danger" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-            Le nom est requis.
-          </small>
-          <small class="text-danger"
-            *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.errors?.['minlength']">
-            Le nom doit contenir au moins 3 caractères.
-          </small>
+        <div class="input-group shadow-sm rounded-3">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-person-fill text-warning"></i>
+          </span>
+          <input type="text" id="name" class="form-control border-0" formControlName="name" placeholder="Votre nom" required>
         </div>
+        <small class="text-danger" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          Le nom est requis.
+        </small>
+        <small class="text-danger" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.errors?.['minlength']">
+          Le nom doit contenir au moins 3 caractères.
+        </small>
       </div>
 
-      <div class="mb-3">
+      <!-- Email -->
+      <div class="mb-3 position-relative">
         <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" class="form-control" formControlName="email" required>
-        <div>
-          <small class="text-danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-            L'email est requis et doit être valide.
-          </small>
+        <div class="input-group shadow-sm rounded-3">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-envelope-fill text-warning"></i>
+          </span>
+          <input type="email" id="email" class="form-control border-0" formControlName="email" placeholder="votre@email.com" required>
         </div>
+        <small class="text-danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          L'email est requis et doit être valide.
+        </small>
       </div>
 
-      <div class="mb-3">
+      <!-- Password -->
+      <div class="mb-3 position-relative">
         <label for="password" class="form-label">Mot de passe</label>
-        <input type="password" id="password" class="form-control" formControlName="password" required>
-        <div>
-          <small class="text-danger"
-            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-            Le mot de passe est requis et doit contenir au moins 3 caractères.
-          </small>
+        <div class="input-group shadow-sm rounded-3">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-lock-fill text-warning"></i>
+          </span>
+          <input type="password" id="password" class="form-control border-0" formControlName="password" placeholder="********" required>
         </div>
+        <small class="text-danger" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Le mot de passe est requis et doit contenir au moins 3 caractères.
+        </small>
       </div>
 
-      <div class="mb-4">
+      <!-- Confirm Password -->
+      <div class="mb-4 position-relative">
         <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
-        <input type="password" id="confirm_password" class="form-control" formControlName="confirm_password" required>
-        <div>
-          <small class="text-danger"
-            *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirm_password')?.touched">
-            Les mots de passe ne correspondent pas.
-          </small>
+        <div class="input-group shadow-sm rounded-3">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-lock-fill text-warning"></i>
+          </span>
+          <input type="password" id="confirm_password" class="form-control border-0" formControlName="confirm_password" placeholder="********" required>
         </div>
-
+        <small class="text-danger" *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirm_password')?.touched">
+          Les mots de passe ne correspondent pas.
+        </small>
       </div>
 
-      <button class="btn btn-primary w-100 mb-3" [disabled]="registerForm.invalid" type="submit">
+      <!-- Bouton -->
+      <button class="btn btn-warning w-100 fw-bold shadow-sm mb-3" [disabled]="registerForm.invalid" type="submit">
         S'inscrire
       </button>
 
-      <div class="text-center">
-        <a [routerLink]="['/login']" routerLinkActive="active" class="text-decoration-none text-secondary">
-          J’ai déjà un compte
-        </a>
-      </div>
     </form>
   </div>
 </div>

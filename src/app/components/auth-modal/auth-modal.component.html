@@ -1,0 +1,49 @@
+<div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg p-0 overflow-hidden">
+
+      <!-- Header -->
+      <div class="modal-header bg-warning text-dark border-0">
+        <h5 class="modal-title">
+          <i class="bi bi-person-circle me-2"></i>
+          {{ activeTab === 'login' ? 'Connexion' : 'Inscription' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Onglets -->
+      <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <button class="nav-link" [class.active]="activeTab === 'login'" (click)="switchTab('login')">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Connexion
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" [class.active]="activeTab === 'register'" (click)="switchTab('register')">
+            <i class="bi bi-pencil-square me-1"></i> Inscription
+          </button>
+        </li>
+      </ul>
+
+      <!-- Body -->
+      <div class="modal-body p-4">
+        <div *ngIf="activeTab === 'login'" class="mx-auto" style="max-width: 400px;">
+          <app-login></app-login>
+        </div>
+        <div *ngIf="activeTab === 'register'" class="mx-auto" style="max-width: 400px;">
+          <app-register></app-register>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center border-0">
+        <small>
+          {{ activeTab === 'login' ? "Pas encore de compte ?" : "Vous avez déjà un compte ?" }}
+          <a (click)="activeTab === 'login' ? switchTab('register') : switchTab('login')">
+            {{ activeTab === 'login' ? "Inscrivez-vous" : "Connectez-vous" }}
+          </a>
+        </small>
+      </div>
+
+    </div>
+  </div>
+</div>
